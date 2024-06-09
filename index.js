@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const matchRoutes = require('./routes/matchRoutes');
 
 // Database Details
 const DB_USER = process.env['DB_USER'];
@@ -10,7 +11,9 @@ const DB_NAME = "task-jeff";
 const DB_COLLECTION_NAME = "players";
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://"+DB_USER+":"+DB_PWD+"@"+DB_URL+"/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://"+DB_USER+":"+DB_PWD+"@"+DB_URL+"/?retryWrites=true&w=majority&appName=Cluster0";
+
+app.use(express.json());
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -59,6 +62,8 @@ app.get('/demo', async (req, res) => {
   await sampleCreate();
   res.send({status: 1, message: "demo"});
 });
+
+app.use('/api', matchRoutes);
 
 //
 
